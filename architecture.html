@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CesiumJS Globe Architecture</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    function CesiumGlobeArchitecture() {
+      const [hoveredLayer, setHoveredLayer] = useState(null);
+
+      const layers = [
+        {
+          id: 'tiles',
+          name: '3D Tiles',
+          subtitle: 'OGC Community Standard',
+          color: '#4CAF50',
+          items: ['Buildings', 'BIM / IFC', 'Photogrammetry', 'Point Clouds', 'glTF Models'],
+          description: 'Massive heterogeneous 3D geospatial datasets streamed efficiently',
+          offset: 0
+        },
+        {
+          id: 'imagery',
+          name: 'Imagery Layers',
+          subtitle: 'ImageryProvider',
+          color: '#2196F3',
+          items: ['Bing Maps Aerial', 'Sentinel-2', 'WMS / WMTS', 'Custom Imagery'],
+          description: 'High-resolution satellite, aerial, and drone imagery draped on terrain',
+          offset: 1
+        },
+        {
+          id: 'terrain',
+          name: 'Terrain Provider',
+          subtitle: 'Cesium World Terrain',
+          color: '#FF9800',
+          items: ['Elevation Data', 'Water Masks', 'Vertex Normals', 'Quantized Mesh'],
+          description: 'Global high-resolution terrain with up to 1 meter accuracy',
+          offset: 2
+        },
+        {
+          id: 'ellipsoid',
+          name: 'WGS84 Ellipsoid',
+          subtitle: 'Globe Base',
+          color: '#00A9CE',
+          items: ['World Geodetic System 1984', 'High-Precision Coordinates', 'Sub-millimeter Accuracy'],
+          description: "Mathematical model of Earth's shape - the foundation of the globe",
+          offset: 3
+        }
+      ];
+
+      return (
+        <div style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d1f35 100%)',
+          padding: '32px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundImage: 'linear-gradient(rgba(0, 169, 206, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 169, 206, 0.03) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+            pointerEvents: 'none'
+          }} />
+
+          <div style={{ textAlign: 'center', marginBottom: '40px', position: 'relative' }}>
+            <h1 style={{
+              fontSize: '36px',
+              fontWeight: '300',
+              color: '#ffffff',
+              margin: 0,
+              letterSpacing: '2px',
+              textTransform: 'uppercase'
+            }}>
+              <span style={{ color: '#00A9CE', fontWeight: '600' }}>CesiumJS</span> Globe Architecture
+            </h1>
+            <p style={{
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: '13px',
+              marginTop: '8px',
+              letterSpacing: '3px',
+              textTransform: 'uppercase'
+            }}>
+              Layered Visualization Stack
+            </p>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            gap: '40px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <div style={{
+              position: 'relative',
+              width: '420px',
+              height: '520px',
+              perspective: '1000px'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-5px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(0, 169, 206, 0.15)',
+                border: '1px solid rgba(0, 169, 206, 0.3)',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                zIndex: 20
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="#00A9CE"/>
+                </svg>
+                <span style={{ color: '#00A9CE', fontSize: '13px', fontWeight: '600' }}>Cesium ion</span>
+              </div>
+
+              {layers.map((layer, index) => (
+                <div
+                  key={layer.id}
+                  onMouseEnter={() => setHoveredLayer(layer.id)}
+                  onMouseLeave={() => setHoveredLayer(null)}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    transform: `translateX(-50%) rotateX(60deg) translateY(${hoveredLayer === layer.id ? layer.offset * 85 - 12 : layer.offset * 85}px)`,
+                    transformStyle: 'preserve-3d',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    cursor: 'pointer',
+                    zIndex: 10 - index,
+                    top: '60px'
+                  }}
+                >
+                  <div style={{
+                    width: layer.id === 'ellipsoid' ? '240px' : `${240 - index * 4}px`,
+                    height: layer.id === 'ellipsoid' ? '240px' : `${240 - index * 4}px`,
+                    borderRadius: '50%',
+                    background: layer.id === 'ellipsoid' 
+                      ? 'radial-gradient(ellipse at 30% 30%, rgba(0, 169, 206, 0.4) 0%, transparent 50%), radial-gradient(ellipse at 70% 70%, rgba(0, 169, 206, 0.2) 0%, transparent 40%), linear-gradient(180deg, rgba(0, 169, 206, 0.15) 0%, rgba(0, 50, 80, 0.3) 100%)'
+                      : `linear-gradient(135deg, ${layer.color}22 0%, ${layer.color}44 100%)`,
+                    border: `2px solid ${layer.color}${hoveredLayer === layer.id ? 'cc' : '66'}`,
+                    boxShadow: hoveredLayer === layer.id 
+                      ? `0 0 30px ${layer.color}44, inset 0 0 40px ${layer.color}22`
+                      : `0 10px 40px rgba(0,0,0,0.3), inset 0 0 20px ${layer.color}11`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    transition: 'all 0.4s ease',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    {layer.id === 'ellipsoid' && (
+                      <svg style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.3 }} viewBox="0 0 100 100">
+                        {[20, 40, 60, 80].map(y => (
+                          <ellipse key={`lat-${y}`} cx="50" cy={y} rx={Math.sin((y / 100) * Math.PI) * 45} ry="3" fill="none" stroke="#00A9CE" strokeWidth="0.5" />
+                        ))}
+                        {[0, 30, 60, 90, 120, 150].map(angle => (
+                          <ellipse key={`lon-${angle}`} cx="50" cy="50" rx="3" ry="45" fill="none" stroke="#00A9CE" strokeWidth="0.5" transform={`rotate(${angle} 50 50)`} />
+                        ))}
+                      </svg>
+                    )}
+                    {layer.id === 'terrain' && (
+                      <div style={{
+                        position: 'absolute', width: '100%', height: '100%', borderRadius: '50%',
+                        background: 'radial-gradient(ellipse at 40% 30%, rgba(139, 90, 43, 0.4) 0%, transparent 40%), radial-gradient(ellipse at 60% 50%, rgba(101, 67, 33, 0.3) 0%, transparent 35%)'
+                      }} />
+                    )}
+                    {layer.id === 'imagery' && (
+                      <div style={{
+                        position: 'absolute', width: '100%', height: '100%', borderRadius: '50%',
+                        background: 'radial-gradient(ellipse at 35% 40%, rgba(34, 139, 34, 0.3) 0%, transparent 30%), radial-gradient(ellipse at 65% 55%, rgba(0, 105, 148, 0.3) 0%, transparent 35%)'
+                      }} />
+                    )}
+                    {layer.id === 'tiles' && (
+                      <svg viewBox="0 0 100 60" style={{ position: 'absolute', width: '60%', height: '60%', opacity: 0.6 }}>
+                        <rect x="20" y="25" width="8" height="20" fill="#4CAF50" opacity="0.7" />
+                        <rect x="30" y="15" width="10" height="30" fill="#4CAF50" opacity="0.8" />
+                        <rect x="42" y="20" width="7" height="25" fill="#4CAF50" opacity="0.6" />
+                        <rect x="51" y="10" width="12" height="35" fill="#4CAF50" opacity="0.9" />
+                        <rect x="65" y="22" width="8" height="23" fill="#4CAF50" opacity="0.7" />
+                      </svg>
+                    )}
+                    <div style={{ transform: 'rotateX(-60deg)', color: '#fff', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.5)', position: 'relative', zIndex: 2 }}>
+                      <div style={{ fontSize: '14px', fontWeight: '600', letterSpacing: '1px' }}>{layer.name}</div>
+                      <div style={{ fontSize: '10px', opacity: 0.7, marginTop: '2px' }}>{layer.subtitle}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '340px' }}>
+              {layers.map((layer) => (
+                <div
+                  key={layer.id}
+                  onMouseEnter={() => setHoveredLayer(layer.id)}
+                  onMouseLeave={() => setHoveredLayer(null)}
+                  style={{
+                    background: hoveredLayer === layer.id ? `linear-gradient(135deg, ${layer.color}15 0%, ${layer.color}08 100%)` : 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${hoveredLayer === layer.id ? layer.color + '66' : 'rgba(255,255,255,0.08)'}`,
+                    borderRadius: '12px',
+                    padding: '16px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    transform: hoveredLayer === layer.id ? 'translateX(8px)' : 'translateX(0)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: layer.color, boxShadow: `0 0 10px ${layer.color}66` }} />
+                    <h3 style={{ margin: 0, color: '#fff', fontSize: '16px', fontWeight: '600' }}>{layer.name}</h3>
+                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', marginLeft: 'auto' }}>{layer.subtitle}</span>
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', margin: '0 0 10px 0', lineHeight: '1.4' }}>{layer.description}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                    {layer.items.map((item, i) => (
+                      <span key={i} style={{
+                        background: `${layer.color}22`,
+                        color: layer.color,
+                        fontSize: '10px',
+                        padding: '3px 8px',
+                        borderRadius: '10px',
+                        border: `1px solid ${layer.color}33`
+                      }}>{item}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '40px', color: 'rgba(255,255,255,0.3)', fontSize: '11px' }}>
+            Source: cesium.com • 3D Tiles is an OGC Community Standard
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<CesiumGlobeArchitecture />);
+  </script>
+</body>
+</html>
