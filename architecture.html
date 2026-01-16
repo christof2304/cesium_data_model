@@ -21,232 +21,374 @@
       const [hoveredLayer, setHoveredLayer] = useState(null);
 
       const layers = [
-        {
-          id: 'tiles',
-          name: '3D Tiles',
-          subtitle: 'OGC Community Standard',
-          color: '#4CAF50',
-          items: ['Buildings', 'BIM / IFC', 'Photogrammetry', 'Point Clouds', 'glTF Models'],
-          description: 'Massive heterogeneous 3D geospatial datasets streamed efficiently',
-          offset: 0
-        },
-        {
-          id: 'imagery',
-          name: 'Imagery Layers',
-          subtitle: 'ImageryProvider',
-          color: '#2196F3',
-          items: ['Bing Maps Aerial', 'Sentinel-2', 'WMS / WMTS', 'Custom Imagery'],
-          description: 'High-resolution satellite, aerial, and drone imagery draped on terrain',
-          offset: 1
-        },
-        {
-          id: 'terrain',
-          name: 'Terrain Provider',
-          subtitle: 'Cesium World Terrain',
-          color: '#FF9800',
-          items: ['Elevation Data', 'Water Masks', 'Vertex Normals', 'Quantized Mesh'],
-          description: 'Global high-resolution terrain with up to 1 meter accuracy',
-          offset: 2
-        },
-        {
-          id: 'ellipsoid',
-          name: 'WGS84 Ellipsoid',
-          subtitle: 'Globe Base',
-          color: '#00A9CE',
-          items: ['World Geodetic System 1984', 'High-Precision Coordinates', 'Sub-millimeter Accuracy'],
-          description: "Mathematical model of Earth's shape - the foundation of the globe",
-          offset: 3
-        }
+        { id: 'tiles', name: '3D Tiles', subtitle: 'Built Assets', color: '#1a5f7a', yOffset: 0 },
+        { id: 'imagery', name: 'Imagery Layers', subtitle: 'Satellite · Maps · WMS', color: '#2196F3', yOffset: 1 },
+        { id: 'terrain', name: 'Terrain Provider', subtitle: 'Cesium World Terrain', color: '#6d4c41', yOffset: 2 },
+        { id: 'ellipsoid', name: 'WGS84 Ellipsoid', subtitle: 'Globe Base', color: '#00A9CE', yOffset: 3 },
       ];
+
+      const layerDetails = {
+        tiles: ['Buildings', 'BIM / IFC', 'Photogrammetry', 'Point Clouds'],
+        imagery: ['Bing Maps Aerial', 'Sentinel-2', 'WMS / WMTS', 'Drone Imagery'],
+        terrain: ['Elevation Data', 'Water Masks', 'Vertex Normals', 'Quantized Mesh'],
+        ellipsoid: ['WGS84 Coordinate System', 'High-Precision Math', 'Sub-mm Accuracy'],
+      };
 
       return (
         <div style={{
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d1f35 100%)',
-          padding: '32px',
+          background: 'linear-gradient(180deg, #e8f4f8 0%, #f5f9fb 30%, #ffffff 100%)',
+          padding: '40px',
           position: 'relative',
           overflow: 'hidden'
         }}>
+          {/* Subtle grid background */}
           <div style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, bottom: 0,
-            backgroundImage: 'linear-gradient(rgba(0, 169, 206, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 169, 206, 0.03) 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,169,206,0.08) 1px, transparent 0)',
+            backgroundSize: '40px 40px',
             pointerEvents: 'none'
           }} />
 
-          <div style={{ textAlign: 'center', marginBottom: '40px', position: 'relative' }}>
+          {/* Title */}
+          <div style={{
+            position: 'absolute',
+            top: '30px',
+            left: '40px',
+            background: 'linear-gradient(135deg, #1a5f7a 0%, #0d3d4d 100%)',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+          }}>
             <h1 style={{
-              fontSize: '36px',
-              fontWeight: '300',
+              fontSize: '20px',
+              fontWeight: '600',
               color: '#ffffff',
               margin: 0,
-              letterSpacing: '2px',
-              textTransform: 'uppercase'
+              letterSpacing: '0.5px'
             }}>
-              <span style={{ color: '#00A9CE', fontWeight: '600' }}>CesiumJS</span> Globe Architecture
+              CesiumJS Globe Architecture
             </h1>
-            <p style={{
-              color: 'rgba(255,255,255,0.5)',
-              fontSize: '13px',
-              marginTop: '8px',
-              letterSpacing: '3px',
-              textTransform: 'uppercase'
-            }}>
-              Layered Visualization Stack
-            </p>
           </div>
 
+          {/* Cesium ion badge */}
           <div style={{
+            position: 'absolute',
+            top: '100px',
+            left: '80px',
             display: 'flex',
-            gap: '40px',
-            maxWidth: '1200px',
-            margin: '0 auto',
             alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap'
+            gap: '8px'
           }}>
             <div style={{
-              position: 'relative',
-              width: '420px',
-              height: '520px',
-              perspective: '1000px'
+              width: '32px',
+              height: '32px',
+              background: 'linear-gradient(135deg, #00A9CE 0%, #0088a8 100%)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(0,169,206,0.4)'
             }}>
-              <div style={{
-                position: 'absolute',
-                top: '-5px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(0, 169, 206, 0.15)',
-                border: '1px solid rgba(0, 169, 206, 0.3)',
-                borderRadius: '20px',
-                padding: '6px 14px',
-                zIndex: 20
-              }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="#00A9CE"/>
-                </svg>
-                <span style={{ color: '#00A9CE', fontSize: '13px', fontWeight: '600' }}>Cesium ion</span>
-              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="white"/>
+              </svg>
+            </div>
+            <span style={{ color: '#00A9CE', fontSize: '16px', fontWeight: '600' }}>Cesium ion</span>
+          </div>
 
-              {layers.map((layer, index) => (
-                <div
-                  key={layer.id}
-                  onMouseEnter={() => setHoveredLayer(layer.id)}
+          {/* Flow arrows from Cesium ion */}
+          <svg style={{ position: 'absolute', top: '120px', left: '130px', width: '300px', height: '200px', pointerEvents: 'none' }}>
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#00A9CE" />
+              </marker>
+            </defs>
+            <path d="M 0,20 Q 80,20 150,80" stroke="#00A9CE" strokeWidth="2" fill="none" markerEnd="url(#arrowhead)" opacity="0.6" />
+            <path d="M 0,20 Q 60,40 120,120" stroke="#00A9CE" strokeWidth="2" fill="none" markerEnd="url(#arrowhead)" opacity="0.6" />
+            <path d="M 0,20 Q 40,60 80,160" stroke="#00A9CE" strokeWidth="2" fill="none" markerEnd="url(#arrowhead)" opacity="0.6" />
+          </svg>
+
+          {/* Main content area */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: 'calc(100vh - 80px)',
+            gap: '60px'
+          }}>
+            
+            {/* 3D Globe Visualization */}
+            <div style={{
+              position: 'relative',
+              width: '500px',
+              height: '650px',
+              marginTop: '40px'
+            }}>
+              {/* Coordinate axes */}
+              <svg style={{ position: 'absolute', bottom: '80px', left: '200px', width: '60px', height: '60px' }}>
+                <line x1="30" y1="50" x2="30" y2="10" stroke="#333" strokeWidth="1" />
+                <line x1="30" y1="50" x2="55" y2="60" stroke="#333" strokeWidth="1" />
+                <line x1="30" y1="50" x2="5" y2="60" stroke="#333" strokeWidth="1" />
+                <text x="28" y="8" fontSize="10" fill="#333">Z</text>
+                <text x="56" y="62" fontSize="10" fill="#333">X</text>
+                <text x="0" y="62" fontSize="10" fill="#333">Y</text>
+              </svg>
+
+              {/* Layer stack - isometric perspective */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                transform: 'perspective(1000px) rotateX(15deg)',
+                transformStyle: 'preserve-3d'
+              }}>
+                
+                {/* 3D Tiles Layer */}
+                <div 
+                  onMouseEnter={() => setHoveredLayer('tiles')}
                   onMouseLeave={() => setHoveredLayer(null)}
                   style={{
                     position: 'absolute',
+                    top: '20px',
                     left: '50%',
-                    transform: `translateX(-50%) rotateX(60deg) translateY(${hoveredLayer === layer.id ? layer.offset * 85 - 12 : layer.offset * 85}px)`,
-                    transformStyle: 'preserve-3d',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    cursor: 'pointer',
-                    zIndex: 10 - index,
-                    top: '60px'
+                    transform: `translateX(-50%) ${hoveredLayer === 'tiles' ? 'translateY(-10px)' : ''}`,
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
                   }}
                 >
-                  <div style={{
-                    width: layer.id === 'ellipsoid' ? '240px' : `${240 - index * 4}px`,
-                    height: layer.id === 'ellipsoid' ? '240px' : `${240 - index * 4}px`,
-                    borderRadius: '50%',
-                    background: layer.id === 'ellipsoid' 
-                      ? 'radial-gradient(ellipse at 30% 30%, rgba(0, 169, 206, 0.4) 0%, transparent 50%), radial-gradient(ellipse at 70% 70%, rgba(0, 169, 206, 0.2) 0%, transparent 40%), linear-gradient(180deg, rgba(0, 169, 206, 0.15) 0%, rgba(0, 50, 80, 0.3) 100%)'
-                      : `linear-gradient(135deg, ${layer.color}22 0%, ${layer.color}44 100%)`,
-                    border: `2px solid ${layer.color}${hoveredLayer === layer.id ? 'cc' : '66'}`,
-                    boxShadow: hoveredLayer === layer.id 
-                      ? `0 0 30px ${layer.color}44, inset 0 0 40px ${layer.color}22`
-                      : `0 10px 40px rgba(0,0,0,0.3), inset 0 0 20px ${layer.color}11`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    transition: 'all 0.4s ease',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    {layer.id === 'ellipsoid' && (
-                      <svg style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.3 }} viewBox="0 0 100 100">
-                        {[20, 40, 60, 80].map(y => (
-                          <ellipse key={`lat-${y}`} cx="50" cy={y} rx={Math.sin((y / 100) * Math.PI) * 45} ry="3" fill="none" stroke="#00A9CE" strokeWidth="0.5" />
-                        ))}
-                        {[0, 30, 60, 90, 120, 150].map(angle => (
-                          <ellipse key={`lon-${angle}`} cx="50" cy="50" rx="3" ry="45" fill="none" stroke="#00A9CE" strokeWidth="0.5" transform={`rotate(${angle} 50 50)`} />
-                        ))}
-                      </svg>
-                    )}
-                    {layer.id === 'terrain' && (
-                      <div style={{
-                        position: 'absolute', width: '100%', height: '100%', borderRadius: '50%',
-                        background: 'radial-gradient(ellipse at 40% 30%, rgba(139, 90, 43, 0.4) 0%, transparent 40%), radial-gradient(ellipse at 60% 50%, rgba(101, 67, 33, 0.3) 0%, transparent 35%)'
-                      }} />
-                    )}
-                    {layer.id === 'imagery' && (
-                      <div style={{
-                        position: 'absolute', width: '100%', height: '100%', borderRadius: '50%',
-                        background: 'radial-gradient(ellipse at 35% 40%, rgba(34, 139, 34, 0.3) 0%, transparent 30%), radial-gradient(ellipse at 65% 55%, rgba(0, 105, 148, 0.3) 0%, transparent 35%)'
-                      }} />
-                    )}
-                    {layer.id === 'tiles' && (
-                      <svg viewBox="0 0 100 60" style={{ position: 'absolute', width: '60%', height: '60%', opacity: 0.6 }}>
-                        <rect x="20" y="25" width="8" height="20" fill="#4CAF50" opacity="0.7" />
-                        <rect x="30" y="15" width="10" height="30" fill="#4CAF50" opacity="0.8" />
-                        <rect x="42" y="20" width="7" height="25" fill="#4CAF50" opacity="0.6" />
-                        <rect x="51" y="10" width="12" height="35" fill="#4CAF50" opacity="0.9" />
-                        <rect x="65" y="22" width="8" height="23" fill="#4CAF50" opacity="0.7" />
-                      </svg>
-                    )}
-                    <div style={{ transform: 'rotateX(-60deg)', color: '#fff', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.5)', position: 'relative', zIndex: 2 }}>
-                      <div style={{ fontSize: '14px', fontWeight: '600', letterSpacing: '1px' }}>{layer.name}</div>
-                      <div style={{ fontSize: '10px', opacity: 0.7, marginTop: '2px' }}>{layer.subtitle}</div>
+                  {/* Buildings/3D content representation */}
+                  <svg width="320" height="120" viewBox="0 0 320 120">
+                    <defs>
+                      <linearGradient id="building1" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#607d8b" />
+                        <stop offset="100%" stopColor="#455a64" />
+                      </linearGradient>
+                      <linearGradient id="building2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#78909c" />
+                        <stop offset="100%" stopColor="#546e7a" />
+                      </linearGradient>
+                      <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.3"/>
+                      </filter>
+                    </defs>
+                    {/* Platform */}
+                    <ellipse cx="160" cy="110" rx="140" ry="35" fill="rgba(200,220,230,0.5)" />
+                    {/* Buildings */}
+                    <rect x="60" y="50" width="25" height="55" fill="url(#building1)" filter="url(#shadow1)" rx="2" />
+                    <rect x="90" y="30" width="30" height="75" fill="url(#building2)" filter="url(#shadow1)" rx="2" />
+                    <rect x="125" y="45" width="22" height="60" fill="url(#building1)" filter="url(#shadow1)" rx="2" />
+                    <rect x="152" y="20" width="35" height="85" fill="url(#building2)" filter="url(#shadow1)" rx="2" />
+                    <rect x="192" y="40" width="28" height="65" fill="url(#building1)" filter="url(#shadow1)" rx="2" />
+                    <rect x="225" y="55" width="20" height="50" fill="url(#building2)" filter="url(#shadow1)" rx="2" />
+                    {/* Crane */}
+                    <line x1="255" y1="35" x2="255" y2="100" stroke="#ff9800" strokeWidth="3" />
+                    <line x1="240" y1="35" x2="280" y2="35" stroke="#ff9800" strokeWidth="2" />
+                    <line x1="275" y1="35" x2="275" y2="55" stroke="#666" strokeWidth="1" />
+                    {/* Point cloud dots */}
+                    {[...Array(15)].map((_, i) => (
+                      <circle key={i} cx={70 + Math.random() * 180} cy={25 + Math.random() * 30} r="2" fill="#90caf9" opacity="0.7" />
+                    ))}
+                  </svg>
+                  {/* Label */}
+                  <div style={{ position: 'absolute', top: '-5px', right: '-140px', textAlign: 'left' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: '#1a5f7a' }}>3D Tiles (Built Assets)</div>
+                    <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>
+                      <span style={{ marginRight: '8px' }}>☁ Buildings</span>
+                      <span>· BIM/IFC · Photogrammetry</span>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#666' }}>
+                      <span style={{ marginRight: '8px' }}>☁ Point Clouds</span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '340px' }}>
-              {layers.map((layer) => (
-                <div
-                  key={layer.id}
-                  onMouseEnter={() => setHoveredLayer(layer.id)}
+                {/* Imagery Layer */}
+                <div 
+                  onMouseEnter={() => setHoveredLayer('imagery')}
                   onMouseLeave={() => setHoveredLayer(null)}
                   style={{
-                    background: hoveredLayer === layer.id ? `linear-gradient(135deg, ${layer.color}15 0%, ${layer.color}08 100%)` : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${hoveredLayer === layer.id ? layer.color + '66' : 'rgba(255,255,255,0.08)'}`,
-                    borderRadius: '12px',
-                    padding: '16px',
-                    cursor: 'pointer',
+                    position: 'absolute',
+                    top: '160px',
+                    left: '50%',
+                    transform: `translateX(-50%) ${hoveredLayer === 'imagery' ? 'translateY(-10px)' : ''}`,
                     transition: 'all 0.3s ease',
-                    transform: hoveredLayer === layer.id ? 'translateX(8px)' : 'translateX(0)'
+                    cursor: 'pointer'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: layer.color, boxShadow: `0 0 10px ${layer.color}66` }} />
-                    <h3 style={{ margin: 0, color: '#fff', fontSize: '16px', fontWeight: '600' }}>{layer.name}</h3>
-                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', marginLeft: 'auto' }}>{layer.subtitle}</span>
+                  <svg width="300" height="90" viewBox="0 0 300 90">
+                    <defs>
+                      <linearGradient id="imagery" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#81d4fa" />
+                        <stop offset="30%" stopColor="#4fc3f7" />
+                        <stop offset="50%" stopColor="#29b6f6" />
+                        <stop offset="70%" stopColor="#4db6ac" />
+                        <stop offset="100%" stopColor="#81c784" />
+                      </linearGradient>
+                      <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="8" stdDeviation="6" floodOpacity="0.2"/>
+                      </filter>
+                    </defs>
+                    <ellipse cx="150" cy="45" rx="130" ry="40" fill="url(#imagery)" filter="url(#shadow2)" opacity="0.9" />
+                    {/* Satellite imagery texture suggestion */}
+                    <ellipse cx="100" cy="40" rx="25" ry="15" fill="#66bb6a" opacity="0.5" />
+                    <ellipse cx="180" cy="50" rx="30" ry="12" fill="#4db6ac" opacity="0.4" />
+                    <ellipse cx="140" cy="35" rx="15" ry="8" fill="#26a69a" opacity="0.3" />
+                  </svg>
+                  {/* Label */}
+                  <div style={{ position: 'absolute', top: '20px', right: '-130px', textAlign: 'left' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '700', color: '#1565c0' }}>Imagery Layers</div>
+                    <div style={{ fontSize: '11px', color: '#666', marginTop: '2px' }}>
+                      (Satellite · Maps · WMS)
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="#90caf9"/>
+                      </svg>
+                    </div>
                   </div>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', margin: '0 0 10px 0', lineHeight: '1.4' }}>{layer.description}</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                    {layer.items.map((item, i) => (
-                      <span key={i} style={{
-                        background: `${layer.color}22`,
-                        color: layer.color,
-                        fontSize: '10px',
-                        padding: '3px 8px',
-                        borderRadius: '10px',
-                        border: `1px solid ${layer.color}33`
-                      }}>{item}</span>
+                </div>
+
+                {/* Terrain Layer */}
+                <div 
+                  onMouseEnter={() => setHoveredLayer('terrain')}
+                  onMouseLeave={() => setHoveredLayer(null)}
+                  style={{
+                    position: 'absolute',
+                    top: '270px',
+                    left: '50%',
+                    transform: `translateX(-50%) ${hoveredLayer === 'terrain' ? 'translateY(-10px)' : ''}`,
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <svg width="280" height="100" viewBox="0 0 280 100">
+                    <defs>
+                      <linearGradient id="terrain" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#a1887f" />
+                        <stop offset="40%" stopColor="#8d6e63" />
+                        <stop offset="100%" stopColor="#6d4c41" />
+                      </linearGradient>
+                      <linearGradient id="snow" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#ffffff" />
+                        <stop offset="100%" stopColor="#e0e0e0" />
+                      </linearGradient>
+                      <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="10" stdDeviation="8" floodOpacity="0.25"/>
+                      </filter>
+                    </defs>
+                    {/* Mountain terrain shape */}
+                    <path d="M 20,80 L 60,40 L 80,55 L 120,20 L 160,50 L 200,30 L 230,60 L 260,80 Q 140,95 20,80 Z" fill="url(#terrain)" filter="url(#shadow3)" />
+                    {/* Snow caps */}
+                    <path d="M 115,20 L 120,20 L 125,28 L 115,28 Z" fill="url(#snow)" />
+                    <path d="M 195,30 L 200,30 L 208,42 L 192,42 Z" fill="url(#snow)" />
+                    {/* Mesh lines to show terrain structure */}
+                    <path d="M 40,75 L 60,45 M 80,70 L 95,40 M 120,75 L 120,25 M 160,70 L 160,55 M 200,75 L 200,35 M 240,78 L 230,62" stroke="rgba(0,0,0,0.1)" strokeWidth="1" fill="none" />
+                    {/* Water area */}
+                    <ellipse cx="70" cy="78" rx="25" ry="8" fill="#4fc3f7" opacity="0.6" />
+                  </svg>
+                  {/* Label */}
+                  <div style={{ position: 'absolute', top: '0px', left: '-160px', textAlign: 'left' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '700', color: '#5d4037' }}>Terrain Provider</div>
+                    <div style={{ fontSize: '11px', color: '#666', marginTop: '2px' }}>(Cesium World Terrain)</div>
+                    <div style={{ fontSize: '10px', color: '#888', marginTop: '6px', lineHeight: '1.5' }}>
+                      Elevation Data · Water Masks · Vertex<br/>Normals
+                    </div>
+                  </div>
+                </div>
+
+                {/* WGS84 Ellipsoid (Wireframe Globe) */}
+                <div 
+                  onMouseEnter={() => setHoveredLayer('ellipsoid')}
+                  onMouseLeave={() => setHoveredLayer(null)}
+                  style={{
+                    position: 'absolute',
+                    top: '380px',
+                    left: '50%',
+                    transform: `translateX(-50%) ${hoveredLayer === 'ellipsoid' ? 'translateY(-10px)' : ''}`,
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <svg width="260" height="180" viewBox="0 0 260 180">
+                    <defs>
+                      <linearGradient id="globeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="rgba(0,169,206,0.15)" />
+                        <stop offset="100%" stopColor="rgba(0,169,206,0.05)" />
+                      </linearGradient>
+                    </defs>
+                    {/* Globe fill - only bottom hemisphere visible */}
+                    <ellipse cx="130" cy="90" rx="110" ry="80" fill="url(#globeGrad)" />
+                    {/* Wireframe lines - latitude */}
+                    {[30, 50, 70, 90, 110, 130, 150].map((y, i) => {
+                      const rx = Math.sqrt(1 - Math.pow((y - 90) / 80, 2)) * 110;
+                      return rx > 0 ? (
+                        <ellipse key={`lat-${i}`} cx="130" cy={y} rx={rx} ry={rx * 0.25} fill="none" stroke="#00A9CE" strokeWidth="0.8" opacity="0.4" />
+                      ) : null;
+                    })}
+                    {/* Wireframe lines - longitude */}
+                    {[0, 20, 40, 60, 80, 100, 120, 140, 160, 180].map((angle, i) => (
+                      <ellipse key={`lon-${i}`} cx="130" cy="90" rx={Math.abs(Math.cos(angle * Math.PI / 180)) * 10 + 3} ry="80" fill="none" stroke="#00A9CE" strokeWidth="0.8" opacity="0.3" transform={`rotate(${angle - 90} 130 90)`} />
                     ))}
+                    {/* Equator highlight */}
+                    <ellipse cx="130" cy="90" rx="110" ry="27" fill="none" stroke="#00A9CE" strokeWidth="1.5" opacity="0.6" />
+                  </svg>
+                  {/* Label */}
+                  <div style={{ position: 'absolute', bottom: '-30px', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '700', color: '#00838f' }}>WGS84 Ellipsoid</div>
+                    <div style={{ fontSize: '11px', color: '#666' }}>(Globe Base)</div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div style={{
+              position: 'absolute',
+              bottom: '40px',
+              right: '60px',
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: '12px',
+              padding: '16px 20px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              border: '1px solid rgba(0,169,206,0.2)'
+            }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#333', marginBottom: '12px' }}>Legend</div>
+              {[
+                { num: '1', name: 'WGS84 Ellipsoid', color: '#00A9CE' },
+                { num: '2', name: 'Terrain Provider', color: '#6d4c41' },
+                { num: '3', name: 'Imagery Layers', color: '#1565c0' },
+                { num: '4', name: '3D Tiles', color: '#1a5f7a' },
+              ].map((item) => (
+                <div key={item.num} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                  <span style={{
+                    width: '20px',
+                    height: '20px',
+                    background: item.color,
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    fontSize: '11px',
+                    fontWeight: '600'
+                  }}>{item.num}</span>
+                  <span style={{ fontSize: '12px', color: '#444' }}>{item.name}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '40px', color: 'rgba(255,255,255,0.3)', fontSize: '11px' }}>
+          {/* Source */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            color: 'rgba(0,0,0,0.3)',
+            fontSize: '11px'
+          }}>
             Source: cesium.com • 3D Tiles is an OGC Community Standard
           </div>
         </div>
