@@ -40,8 +40,8 @@
       const curatedContent = [
         { id: 'worldterrain', name: 'Cesium World Terrain', desc: 'Global terrain up to 1m', color: '#795548', icon: '🌍', url: 'https://cesium.com/platform/cesium-ion/content/cesium-world-terrain/' },
         { id: 'osmbuildings', name: 'Cesium OSM Buildings', desc: 'Global 3D buildings', color: '#455a64', icon: '🏢', url: 'https://cesium.com/platform/cesium-ion/content/cesium-osm-buildings/' },
-        { id: 'bingmaps', name: 'Bing Maps Aerial', desc: 'Satellite imagery', color: '#1976D2', icon: '🛰', url: 'https://cesium.com/platform/cesium-ion/content/bing-maps/' },
-        { id: 'sentinel', name: 'Sentinel-2 Imagery', desc: '10m cloudless', color: '#388E3C', icon: '🌱', url: 'https://cesium.com/platform/cesium-ion/content/sentinel-2/' },
+        { id: 'bingmaps', name: 'Bing Maps Aerial', desc: 'Satellite imagery', color: '#1976D2', icon: '🛰', url: 'https://cesium.com/platform/cesium-ion/content/bing-maps-imagery/' },
+        { id: 'sentinel', name: 'Sentinel-2 Imagery', desc: '10m cloudless', color: '#388E3C', icon: '🌱', url: 'https://cesium.com/platform/cesium-ion/content/sentinel-2-imagery/' },
         { id: 'google3d', name: 'Google 3D Tiles', desc: 'Photorealistic', color: '#EA4335', icon: '🌆', url: 'https://cesium.com/learn/cesiumjs-learn/cesiumjs-photorealistic-3d-tiles/' },
       ];
 
@@ -264,10 +264,8 @@
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 {[
-                  { step: '1', name: 'Tile', desc: 'Convert' },
+                  { step: '1', name: 'Tile', desc: 'Convert to 3D Tiles' },
                   { step: '2', name: 'Optimize', desc: 'Compress & LOD' },
-                  { step: '3', name: 'Host', desc: 'Cloud storage' },
-                  { step: '4', name: 'Stream', desc: 'Global CDN' },
                 ].map((item) => (
                   <div key={item.step} style={{
                     background: 'rgba(255,255,255,0.9)',
@@ -296,12 +294,86 @@
               </div>
             </a>
 
+            {/* ARROW: Host */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 2px' }}>
+              <svg width="35" height="25" viewBox="0 0 35 25">
+                <defs>
+                  <linearGradient id="arrow1b" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00A9CE" />
+                    <stop offset="100%" stopColor="#607D8B" />
+                  </linearGradient>
+                  <marker id="ah1b" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto">
+                    <polygon points="0 0, 5 2, 0 4" fill="#607D8B" />
+                  </marker>
+                </defs>
+                <line x1="2" y1="12" x2="28" y2="12" stroke="url(#arrow1b)" strokeWidth="2" markerEnd="url(#ah1b)" />
+              </svg>
+              <div style={{ color: '#999', fontSize: '6px', fontWeight: '600', letterSpacing: '0.5px' }}>HOST</div>
+            </div>
+
+            {/* Hosting Options */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
+              {/* 1. ion Cloud */}
+              <a href="https://cesium.com/platform/cesium-ion/" target="_blank" style={{
+                background: 'linear-gradient(135deg, rgba(0,169,206,0.08) 0%, rgba(0,169,206,0.02) 100%)',
+                borderRadius: '8px',
+                padding: '8px 10px',
+                border: '1px solid rgba(0,169,206,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                width: '130px'
+              }}>
+                <span style={{ fontSize: '14px' }}>☁️</span>
+                <div>
+                  <div style={{ fontSize: '8px', fontWeight: '600', color: '#00838f' }}>ion Cloud</div>
+                  <div style={{ fontSize: '6px', color: '#888' }}>Cesium hosted</div>
+                </div>
+              </a>
+              
+              {/* 2. ion On-Prem */}
+              <a href="https://cesium.com/platform/cesium-ion/cesium-ion-self-hosted/" target="_blank" style={{
+                background: 'linear-gradient(135deg, rgba(103,58,183,0.08) 0%, rgba(103,58,183,0.02) 100%)',
+                borderRadius: '8px',
+                padding: '8px 10px',
+                border: '1px solid rgba(103,58,183,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                width: '130px'
+              }}>
+                <span style={{ fontSize: '14px' }}>🏢</span>
+                <div>
+                  <div style={{ fontSize: '8px', fontWeight: '600', color: '#5e35b1' }}>ion On-Prem</div>
+                  <div style={{ fontSize: '6px', color: '#888' }}>Self-hosted</div>
+                </div>
+              </a>
+              
+              {/* 3. Independent Server */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(96,125,139,0.08) 0%, rgba(96,125,139,0.02) 100%)',
+                borderRadius: '8px',
+                padding: '8px 10px',
+                border: '1px solid rgba(96,125,139,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                width: '130px'
+              }}>
+                <span style={{ fontSize: '14px' }}>🖥️</span>
+                <div>
+                  <div style={{ fontSize: '8px', fontWeight: '600', color: '#546e7a' }}>Independent</div>
+                  <div style={{ fontSize: '6px', color: '#888' }}>S3, Azure, nginx...</div>
+                </div>
+              </div>
+            </div>
+
             {/* ARROW: Stream */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 2px' }}>
               <svg width="35" height="25" viewBox="0 0 35 25">
                 <defs>
                   <linearGradient id="arrow2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#00A9CE" />
+                    <stop offset="0%" stopColor="#607D8B" />
                     <stop offset="100%" stopColor="#4CAF50" />
                   </linearGradient>
                   <marker id="ah2" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto">
@@ -420,16 +492,16 @@
                 <div style={{ textAlign: 'center', marginTop: '4px', color: '#bbb', fontSize: '6px' }}>For Developers</div>
               </div>
 
-              {/* Cesium Stories */}
+              {/* ion Stories */}
               <a 
                 href="https://cesium.com/platform/cesium-ion/cesium-stories/" 
                 target="_blank"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(156,39,176,0.1) 0%, rgba(156,39,176,0.03) 100%)',
+                  background: 'linear-gradient(135deg, rgba(0,169,206,0.1) 0%, rgba(0,169,206,0.03) 100%)',
                   borderRadius: '10px',
                   padding: '10px',
-                  border: '2px solid rgba(156,39,176,0.25)',
-                  boxShadow: '0 3px 16px rgba(156,39,176,0.1)',
+                  border: '2px solid rgba(0,169,206,0.25)',
+                  boxShadow: '0 3px 16px rgba(0,169,206,0.1)',
                   width: '160px',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
@@ -438,15 +510,15 @@
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{
                     width: '32px', height: '32px',
-                    background: 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)',
+                    background: 'linear-gradient(135deg, #00A9CE 0%, #0088a8 100%)',
                     borderRadius: '8px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(156,39,176,0.3)'
+                    boxShadow: '0 2px 8px rgba(0,169,206,0.3)'
                   }}>
                     <span style={{ fontSize: '16px' }}>📖</span>
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '11px', fontWeight: '700', color: '#7B1FA2', margin: 0 }}>Cesium Stories</h3>
+                    <h3 style={{ fontSize: '11px', fontWeight: '700', color: '#00838f', margin: 0 }}>ion Stories</h3>
                     <div style={{ fontSize: '7px', color: '#888' }}>Interactive Presentations</div>
                   </div>
                 </div>
@@ -460,13 +532,13 @@
                   lineHeight: '1.4'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                    <span style={{ color: '#9C27B0' }}>✓</span> No-Code Storytelling
+                    <span style={{ color: '#00A9CE' }}>✓</span> No-Code Storytelling
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                    <span style={{ color: '#9C27B0' }}>✓</span> Share with Link
+                    <span style={{ color: '#00A9CE' }}>✓</span> Share with Link
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span style={{ color: '#9C27B0' }}>✓</span> Embed in Websites
+                    <span style={{ color: '#00A9CE' }}>✓</span> Embed in Websites
                   </div>
                 </div>
                 <div style={{ textAlign: 'center', marginTop: '6px', color: '#bbb', fontSize: '6px' }}>For Everyone</div>
