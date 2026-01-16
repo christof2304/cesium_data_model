@@ -10,6 +10,8 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    a:hover { opacity: 0.85; }
   </style>
 </head>
 <body>
@@ -23,39 +25,39 @@
       const [hoveredRuntime, setHoveredRuntime] = useState(null);
 
       const inputFormats = [
-        { id: 'gltf', name: 'glTF', ext: 'GLB / GLTF', color: '#2196F3', icon: '△' },
-        { id: 'pointcloud', name: 'Point Clouds', ext: 'LAS / LAZ', color: '#E91E63', icon: '⋮⋮' },
-        { id: 'citygml', name: 'CityGML', ext: 'GML / XML', color: '#9C27B0', icon: '🏛' },
-        { id: 'imagery', name: 'Imagery', ext: 'TIFF / PNG / JPG', color: '#4CAF50', icon: '🛰' },
-        { id: 'photogrammetry', name: 'Photogrammetry', ext: 'OBJ / DAE', color: '#FF9800', icon: '◈' },
-        { id: 'terrain', name: 'Terrain / DEM', ext: 'GeoTIFF / DEM', color: '#795548', icon: '⛰' },
-        { id: 'ifc', name: 'IFC (BIM)', ext: 'IFC 2x3 / 4', color: '#3F51B5', icon: '⌂' },
-        { id: 'rvt', name: 'Revit', ext: 'RVT', color: '#1565C0', icon: 'R' },
-        { id: 'imodel', name: 'iModel', ext: 'Bentley', color: '#00897B', icon: 'μ' },
-        { id: 'kml', name: 'KML / COLLADA', ext: 'KMZ / KML', color: '#607D8B', icon: '📍' },
+        { id: 'gltf', name: 'glTF', ext: 'GLB / GLTF', color: '#2196F3', icon: '△', url: 'https://cesium.com/learn/3d-tiling/tiler-data-formats/' },
+        { id: 'pointcloud', name: 'Point Clouds', ext: 'LAS / LAZ', color: '#E91E63', icon: '⋮⋮', url: 'https://cesium.com/learn/3d-tiling/ion-tile-point-clouds/' },
+        { id: 'citygml', name: 'CityGML', ext: 'GML / XML', color: '#9C27B0', icon: '🏛', url: 'https://cesium.com/learn/3d-tiling/ion-tile-3d-buildings/' },
+        { id: 'imagery', name: 'Imagery', ext: 'TIFF / PNG', color: '#4CAF50', icon: '🛰', url: 'https://cesium.com/learn/3d-tiling/ion-tile-imagery/' },
+        { id: 'photogrammetry', name: 'Photogrammetry', ext: 'OBJ / DAE', color: '#FF9800', icon: '◈', url: 'https://cesium.com/learn/3d-tiling/ion-tile-photogrammetry/' },
+        { id: 'terrain', name: 'Terrain / DEM', ext: 'GeoTIFF', color: '#795548', icon: '⛰', url: 'https://cesium.com/learn/3d-tiling/ion-tile-terrain/' },
+        { id: 'ifc', name: 'IFC (BIM)', ext: 'IFC 2x3/4', color: '#3F51B5', icon: '⌂', url: 'https://cesium.com/platform/cesium-ion/3d-tiling-pipeline/design-tiler/' },
+        { id: 'rvt', name: 'Revit', ext: 'RVT', color: '#1565C0', icon: 'R', url: 'https://cesium.com/learn/3d-tiling/tiler-data-formats/' },
+        { id: 'imodel', name: 'iModel', ext: 'Bentley', color: '#00897B', icon: 'μ', url: 'https://cesium.com/platform/cesium-ion/3d-tiling-pipeline/design-tiler/' },
+        { id: 'kml', name: 'KML / COLLADA', ext: 'KMZ', color: '#607D8B', icon: '📍', url: 'https://cesium.com/learn/3d-tiling/ion-tile-3d-buildings/' },
       ];
 
       const curatedContent = [
-        { id: 'worldterrain', name: 'Cesium World Terrain', desc: 'Global terrain up to 1m', color: '#795548', icon: '🌍' },
-        { id: 'osmbuildings', name: 'Cesium OSM Buildings', desc: 'Global 3D buildings', color: '#455a64', icon: '🏢' },
-        { id: 'bingmaps', name: 'Bing Maps Aerial', desc: 'Satellite imagery', color: '#1976D2', icon: '🛰' },
-        { id: 'sentinel', name: 'Sentinel-2 Imagery', desc: '10m cloudless', color: '#388E3C', icon: '🌱' },
-        { id: 'google3d', name: 'Google 3D Tiles', desc: 'Photorealistic', color: '#EA4335', icon: '🌆' },
+        { id: 'worldterrain', name: 'Cesium World Terrain', desc: 'Global terrain up to 1m', color: '#795548', icon: '🌍', url: 'https://cesium.com/platform/cesium-ion/content/cesium-world-terrain/' },
+        { id: 'osmbuildings', name: 'Cesium OSM Buildings', desc: 'Global 3D buildings', color: '#455a64', icon: '🏢', url: 'https://cesium.com/platform/cesium-ion/content/cesium-osm-buildings/' },
+        { id: 'bingmaps', name: 'Bing Maps Aerial', desc: 'Satellite imagery', color: '#1976D2', icon: '🛰', url: 'https://cesium.com/platform/cesium-ion/content/bing-maps/' },
+        { id: 'sentinel', name: 'Sentinel-2 Imagery', desc: '10m cloudless', color: '#388E3C', icon: '🌱', url: 'https://cesium.com/platform/cesium-ion/content/sentinel-2/' },
+        { id: 'google3d', name: 'Google 3D Tiles', desc: 'Photorealistic', color: '#EA4335', icon: '🌆', url: 'https://cesium.com/learn/cesiumjs-learn/cesiumjs-photorealistic-3d-tiles/' },
       ];
 
       const runtimes = [
-        { id: 'cesiumjs', name: 'CesiumJS', desc: 'Web (JavaScript)', color: '#00A9CE', icon: 'JS' },
-        { id: 'unreal', name: 'Cesium for Unreal', desc: 'Unreal Engine 5', color: '#0D47A1', icon: 'UE' },
-        { id: 'unity', name: 'Cesium for Unity', desc: 'Unity Engine', color: '#1565C0', icon: 'U' },
-        { id: 'omniverse', name: 'Cesium for Omniverse', desc: 'NVIDIA Omniverse', color: '#76B900', icon: 'NV' },
-        { id: 'o3de', name: 'Cesium for O3DE', desc: 'Open 3D Engine', color: '#FF6F00', icon: 'O3' },
+        { id: 'cesiumjs', name: 'CesiumJS', desc: 'Web (JS)', color: '#00A9CE', icon: 'JS', url: 'https://cesium.com/platform/cesiumjs/' },
+        { id: 'unreal', name: 'Cesium for Unreal', desc: 'UE5', color: '#0D47A1', icon: 'UE', url: 'https://cesium.com/platform/cesium-for-unreal/' },
+        { id: 'unity', name: 'Cesium for Unity', desc: 'Unity', color: '#1565C0', icon: 'U', url: 'https://cesium.com/platform/cesium-for-unity/' },
+        { id: 'omniverse', name: 'Cesium for Omniverse', desc: 'NVIDIA', color: '#76B900', icon: 'NV', url: 'https://cesium.com/platform/cesium-for-omniverse/' },
+        { id: 'o3de', name: 'Cesium for O3DE', desc: 'O3DE', color: '#FF6F00', icon: 'O3', url: 'https://cesium.com/platform/cesium-for-o3de/' },
       ];
 
       return (
         <div style={{
           minHeight: '100vh',
           background: 'linear-gradient(180deg, #e8f4f8 0%, #f5f9fb 30%, #ffffff 100%)',
-          padding: '30px 40px',
+          padding: '20px 30px',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -69,212 +71,198 @@
           }} />
 
           {/* Title */}
-          <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div style={{
+          <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <a href="https://cesium.com/platform/cesium-ion/3d-tiling-pipeline/" target="_blank" style={{
               background: 'linear-gradient(135deg, #1a5f7a 0%, #0d3d4d 100%)',
-              padding: '12px 24px',
+              padding: '10px 20px',
               borderRadius: '8px',
               boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
             }}>
-              <h1 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: '#ffffff',
-                margin: 0
-              }}>
+              <h1 style={{ fontSize: '18px', fontWeight: '600', color: '#ffffff', margin: 0 }}>
                 Cesium Data Pipeline
               </h1>
-            </div>
-            <span style={{ color: '#666', fontSize: '14px' }}>From Source Data to 3D Visualization</span>
+            </a>
+            <span style={{ color: '#666', fontSize: '13px' }}>From Source Data to 3D Visualization</span>
           </div>
 
-          {/* Main content - horizontal flow */}
+          {/* Main content - compact horizontal flow */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: '280px 280px auto 200px auto 260px',
-            gap: '20px',
-            alignItems: 'start',
-            maxWidth: '1500px',
-            margin: '0 auto'
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'nowrap'
           }}>
 
-            {/* LEFT SIDE: Your Data */}
+            {/* LEFT: Your Data */}
             <div style={{
               background: 'rgba(255,255,255,0.95)',
-              borderRadius: '16px',
-              padding: '20px',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-              border: '1px solid rgba(0,0,0,0.06)'
+              borderRadius: '12px',
+              padding: '14px',
+              boxShadow: '0 3px 16px rgba(0,0,0,0.07)',
+              border: '1px solid rgba(0,0,0,0.05)',
+              width: '240px',
+              flexShrink: 0
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                 <div style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '28px', height: '28px',
                   background: 'linear-gradient(135deg, #607D8B 0%, #455a64 100%)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  borderRadius: '6px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}>
-                  <span style={{ color: '#fff', fontSize: '18px' }}>📁</span>
+                  <span style={{ color: '#fff', fontSize: '14px' }}>📁</span>
                 </div>
                 <div>
-                  <h2 style={{ fontSize: '15px', fontWeight: '700', color: '#333', margin: 0 }}>Your Data</h2>
-                  <div style={{ fontSize: '10px', color: '#888' }}>Source Formats</div>
+                  <h2 style={{ fontSize: '13px', fontWeight: '700', color: '#333', margin: 0 }}>Your Data</h2>
+                  <div style={{ fontSize: '9px', color: '#888' }}>Source Formats</div>
                 </div>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
                 {inputFormats.map((format) => (
-                  <div
+                  <a
                     key={format.id}
+                    href={format.url}
+                    target="_blank"
                     onMouseEnter={() => setHoveredFormat(format.id)}
                     onMouseLeave={() => setHoveredFormat(null)}
                     style={{
                       background: hoveredFormat === format.id ? `${format.color}15` : '#f8f9fa',
-                      border: `1px solid ${hoveredFormat === format.id ? format.color + '40' : '#e9ecef'}`,
-                      borderRadius: '6px',
-                      padding: '8px',
+                      border: `1px solid ${hoveredFormat === format.id ? format.color + '40' : '#eee'}`,
+                      borderRadius: '5px',
+                      padding: '6px',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.15s ease'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '2px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <span style={{
-                        fontSize: format.icon.length === 1 ? '12px' : '10px',
+                        fontSize: format.icon.length === 1 ? '11px' : '9px',
                         fontWeight: format.icon.length === 1 ? '700' : '400',
                         color: format.color,
-                        width: '16px',
+                        width: '14px',
                         textAlign: 'center'
                       }}>{format.icon}</span>
                       <span style={{
                         color: hoveredFormat === format.id ? format.color : '#333',
-                        fontSize: '10px',
+                        fontSize: '9px',
                         fontWeight: '600'
                       }}>{format.name}</span>
                     </div>
-                    <div style={{
-                      color: '#999',
-                      fontSize: '8px',
-                      fontFamily: 'monospace',
-                      marginLeft: '21px'
-                    }}>{format.ext}</div>
-                  </div>
+                    <div style={{ color: '#aaa', fontSize: '7px', fontFamily: 'monospace', marginLeft: '18px' }}>{format.ext}</div>
+                  </a>
                 ))}
               </div>
             </div>
 
-            {/* LEFT SIDE: Curated Global Content */}
+            {/* LEFT: Curated Content */}
             <div style={{
               background: 'rgba(255,255,255,0.95)',
-              borderRadius: '16px',
-              padding: '20px',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-              border: '1px solid rgba(76,175,80,0.2)'
+              borderRadius: '12px',
+              padding: '14px',
+              boxShadow: '0 3px 16px rgba(0,0,0,0.07)',
+              border: '1px solid rgba(76,175,80,0.15)',
+              width: '200px',
+              flexShrink: 0
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <a href="https://cesium.com/platform/cesium-ion/content/" target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                 <div style={{
-                  width: '36px',
-                  height: '36px',
+                  width: '28px', height: '28px',
                   background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  borderRadius: '6px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}>
-                  <span style={{ color: '#fff', fontSize: '18px' }}>🌐</span>
+                  <span style={{ color: '#fff', fontSize: '14px' }}>🌐</span>
                 </div>
                 <div>
-                  <h2 style={{ fontSize: '15px', fontWeight: '700', color: '#2e7d32', margin: 0 }}>Curated Content</h2>
-                  <div style={{ fontSize: '10px', color: '#888' }}>Ready to use</div>
+                  <h2 style={{ fontSize: '12px', fontWeight: '700', color: '#2e7d32', margin: 0 }}>Curated Content</h2>
+                  <div style={{ fontSize: '9px', color: '#888' }}>Ready to use</div>
                 </div>
-              </div>
+              </a>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {curatedContent.map((content) => (
-                  <div
+                  <a
                     key={content.id}
+                    href={content.url}
+                    target="_blank"
                     onMouseEnter={() => setHoveredContent(content.id)}
                     onMouseLeave={() => setHoveredContent(null)}
                     style={{
                       background: hoveredContent === content.id ? `${content.color}12` : '#f8f9fa',
-                      border: `1px solid ${hoveredContent === content.id ? content.color + '40' : '#e9ecef'}`,
-                      borderRadius: '6px',
-                      padding: '10px',
+                      border: `1px solid ${hoveredContent === content.id ? content.color + '40' : '#eee'}`,
+                      borderRadius: '5px',
+                      padding: '6px 8px',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.15s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '16px' }}>{content.icon}</span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{
-                          fontSize: '11px',
-                          fontWeight: '600',
-                          color: hoveredContent === content.id ? content.color : '#333'
-                        }}>{content.name}</div>
-                        <div style={{ fontSize: '9px', color: '#888' }}>{content.desc}</div>
-                      </div>
+                    <span style={{ fontSize: '12px' }}>{content.icon}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{
+                        fontSize: '9px',
+                        fontWeight: '600',
+                        color: hoveredContent === content.id ? content.color : '#333',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}>{content.name}</div>
+                      <div style={{ fontSize: '7px', color: '#999' }}>{content.desc}</div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
 
-            {/* ARROW: Upload/Combine */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              padding: '20px 0'
-            }}>
-              <svg width="60" height="60" viewBox="0 0 60 60">
+            {/* ARROW: Upload */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 4px' }}>
+              <svg width="40" height="30" viewBox="0 0 40 30">
                 <defs>
                   <linearGradient id="arrow1" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#90a4ae" />
                     <stop offset="100%" stopColor="#00A9CE" />
                   </linearGradient>
-                  <marker id="ah1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                    <polygon points="0 0, 8 3, 0 6" fill="#00A9CE" />
+                  <marker id="ah1" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                    <polygon points="0 0, 6 2.5, 0 5" fill="#00A9CE" />
                   </marker>
                 </defs>
-                <line x1="5" y1="30" x2="48" y2="30" stroke="url(#arrow1)" strokeWidth="3" markerEnd="url(#ah1)" />
+                <line x1="2" y1="15" x2="32" y2="15" stroke="url(#arrow1)" strokeWidth="2.5" markerEnd="url(#ah1)" />
               </svg>
-              <div style={{ color: '#888', fontSize: '9px', fontWeight: '500', letterSpacing: '1px', marginTop: '4px' }}>UPLOAD</div>
+              <div style={{ color: '#999', fontSize: '7px', fontWeight: '600', letterSpacing: '0.5px' }}>UPLOAD</div>
             </div>
 
             {/* CENTER: Cesium ion */}
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(0,169,206,0.1) 0%, rgba(0,169,206,0.03) 100%)',
-              borderRadius: '20px',
-              padding: '24px 20px',
+            <a href="https://cesium.com/platform/cesium-ion/" target="_blank" style={{
+              background: 'linear-gradient(135deg, rgba(0,169,206,0.12) 0%, rgba(0,169,206,0.04) 100%)',
+              borderRadius: '14px',
+              padding: '16px',
               border: '2px solid rgba(0,169,206,0.3)',
-              boxShadow: '0 8px 32px rgba(0,169,206,0.15)',
-              alignSelf: 'center'
+              boxShadow: '0 6px 24px rgba(0,169,206,0.15)',
+              width: '160px',
+              flexShrink: 0
             }}>
-              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '12px' }}>
                 <div style={{
-                  width: '56px',
-                  height: '56px',
-                  margin: '0 auto 10px',
+                  width: '44px', height: '44px',
+                  margin: '0 auto 8px',
                   background: 'linear-gradient(135deg, #00A9CE 0%, #0088a8 100%)',
                   borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 20px rgba(0,169,206,0.4)'
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 3px 15px rgba(0,169,206,0.4)'
                 }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="white"/>
                   </svg>
                 </div>
-                <h2 style={{ color: '#00838f', fontSize: '18px', fontWeight: '700', margin: '0 0 2px 0' }}>Cesium ion</h2>
-                <div style={{ color: '#666', fontSize: '10px' }}>3D Tiling Pipeline</div>
+                <h2 style={{ color: '#00838f', fontSize: '15px', fontWeight: '700', margin: '0 0 2px 0' }}>Cesium ion</h2>
+                <div style={{ color: '#777', fontSize: '8px' }}>3D Tiling Pipeline</div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {[
                   { step: '1', name: 'Tile', desc: 'Convert to 3D Tiles' },
                   { step: '2', name: 'Optimize', desc: 'Compress & LOD' },
@@ -282,147 +270,133 @@
                   { step: '4', name: 'Stream', desc: 'Global CDN' },
                 ].map((item) => (
                   <div key={item.step} style={{
-                    background: 'rgba(255,255,255,0.85)',
-                    borderRadius: '8px',
-                    padding: '8px 10px',
+                    background: 'rgba(255,255,255,0.9)',
+                    borderRadius: '6px',
+                    padding: '5px 8px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    border: '1px solid rgba(0,169,206,0.15)'
+                    gap: '6px',
+                    border: '1px solid rgba(0,169,206,0.12)'
                   }}>
                     <span style={{
-                      width: '22px',
-                      height: '22px',
+                      width: '18px', height: '18px',
                       background: '#00A9CE',
                       borderRadius: '50%',
                       color: '#fff',
-                      fontSize: '11px',
+                      fontSize: '9px',
                       fontWeight: '700',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>{item.step}</span>
                     <div>
-                      <div style={{ fontSize: '11px', fontWeight: '600', color: '#00838f' }}>{item.name}</div>
-                      <div style={{ fontSize: '8px', color: '#888' }}>{item.desc}</div>
+                      <div style={{ fontSize: '10px', fontWeight: '600', color: '#00838f' }}>{item.name}</div>
+                      <div style={{ fontSize: '7px', color: '#999' }}>{item.desc}</div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </a>
 
             {/* ARROW: Stream */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              padding: '20px 0'
-            }}>
-              <svg width="60" height="60" viewBox="0 0 60 60">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 4px' }}>
+              <svg width="40" height="30" viewBox="0 0 40 30">
                 <defs>
                   <linearGradient id="arrow2" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#00A9CE" />
                     <stop offset="100%" stopColor="#4CAF50" />
                   </linearGradient>
-                  <marker id="ah2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                    <polygon points="0 0, 8 3, 0 6" fill="#4CAF50" />
+                  <marker id="ah2" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                    <polygon points="0 0, 6 2.5, 0 5" fill="#4CAF50" />
                   </marker>
                 </defs>
-                <line x1="5" y1="30" x2="48" y2="30" stroke="url(#arrow2)" strokeWidth="3" markerEnd="url(#ah2)" />
+                <line x1="2" y1="15" x2="32" y2="15" stroke="url(#arrow2)" strokeWidth="2.5" markerEnd="url(#ah2)" />
               </svg>
-              <div style={{ color: '#888', fontSize: '9px', fontWeight: '500', letterSpacing: '1px', marginTop: '4px' }}>STREAM</div>
+              <div style={{ color: '#999', fontSize: '7px', fontWeight: '600', letterSpacing: '0.5px' }}>STREAM</div>
             </div>
 
-            {/* RIGHT: Output */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* 3D Tiles */}
-              <div style={{
-                background: 'linear-gradient(135deg, rgba(76,175,80,0.1) 0%, rgba(76,175,80,0.02) 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                border: '2px solid rgba(76,175,80,0.3)',
-                textAlign: 'center',
-                boxShadow: '0 4px 20px rgba(76,175,80,0.1)'
-              }}>
-                <svg width="50" height="50" viewBox="0 0 100 100" style={{ marginBottom: '8px' }}>
-                  <defs>
-                    <linearGradient id="tilesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#81C784" />
-                      <stop offset="100%" stopColor="#4CAF50" />
-                    </linearGradient>
-                    <filter id="tileShadow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="2" dy="3" stdDeviation="3" floodOpacity="0.2"/>
-                    </filter>
-                  </defs>
-                  <polygon points="50,8 92,50 50,92 8,50" fill="url(#tilesGrad)" filter="url(#tileShadow)" />
-                  <polygon points="50,20 80,50 50,80 20,50" fill="none" stroke="#fff" strokeWidth="2" opacity="0.6" />
-                  <polygon points="50,34 66,50 50,66 34,50" fill="#fff" opacity="0.3" />
-                </svg>
-                <h2 style={{ color: '#2e7d32', fontSize: '20px', fontWeight: '700', margin: '0 0 2px 0' }}>3D Tiles</h2>
-                <div style={{ color: '#666', fontSize: '10px', letterSpacing: '1px' }}>OGC COMMUNITY STANDARD</div>
-              </div>
+            {/* RIGHT: 3D Tiles */}
+            <a href="https://cesium.com/why-cesium/3d-tiles/" target="_blank" style={{
+              background: 'linear-gradient(135deg, rgba(76,175,80,0.12) 0%, rgba(76,175,80,0.03) 100%)',
+              borderRadius: '12px',
+              padding: '14px',
+              border: '2px solid rgba(76,175,80,0.3)',
+              textAlign: 'center',
+              boxShadow: '0 4px 16px rgba(76,175,80,0.1)',
+              width: '130px',
+              flexShrink: 0
+            }}>
+              <svg width="40" height="40" viewBox="0 0 100 100" style={{ marginBottom: '6px' }}>
+                <defs>
+                  <linearGradient id="tilesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#81C784" />
+                    <stop offset="100%" stopColor="#4CAF50" />
+                  </linearGradient>
+                </defs>
+                <polygon points="50,8 92,50 50,92 8,50" fill="url(#tilesGrad)" />
+                <polygon points="50,22 78,50 50,78 22,50" fill="none" stroke="#fff" strokeWidth="2" opacity="0.6" />
+              </svg>
+              <h2 style={{ color: '#2e7d32', fontSize: '16px', fontWeight: '700', margin: '0 0 2px 0' }}>3D Tiles</h2>
+              <div style={{ color: '#777', fontSize: '8px', letterSpacing: '0.5px' }}>OGC STANDARD</div>
+            </a>
 
-              {/* Runtime engines */}
-              <div style={{
-                background: 'rgba(255,255,255,0.95)',
-                borderRadius: '14px',
-                padding: '16px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                border: '1px solid rgba(0,0,0,0.06)'
-              }}>
-                <h3 style={{
-                  fontSize: '10px',
-                  fontWeight: '600',
-                  color: '#888',
-                  marginBottom: '10px',
-                  textAlign: 'center',
-                  letterSpacing: '2px'
-                }}>RUNTIME ENGINES</h3>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  {runtimes.map((runtime) => (
-                    <div
-                      key={runtime.id}
-                      onMouseEnter={() => setHoveredRuntime(runtime.id)}
-                      onMouseLeave={() => setHoveredRuntime(null)}
-                      style={{
-                        background: hoveredRuntime === runtime.id ? `${runtime.color}12` : '#f8f9fa',
-                        border: `1px solid ${hoveredRuntime === runtime.id ? runtime.color + '40' : '#e9ecef'}`,
-                        borderRadius: '6px',
-                        padding: '8px 10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      <span style={{
-                        width: '26px',
-                        height: '26px',
-                        background: hoveredRuntime === runtime.id ? runtime.color : '#dee2e6',
-                        borderRadius: '5px',
-                        color: hoveredRuntime === runtime.id ? '#fff' : '#666',
-                        fontSize: '9px',
-                        fontWeight: '700',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s ease'
-                      }}>{runtime.icon}</span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{
-                          fontSize: '11px',
-                          fontWeight: '600',
-                          color: hoveredRuntime === runtime.id ? runtime.color : '#333'
-                        }}>{runtime.name}</div>
-                        <div style={{ fontSize: '8px', color: '#888' }}>{runtime.desc}</div>
-                      </div>
+            {/* RIGHT: Runtime engines */}
+            <div style={{
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: '12px',
+              padding: '14px',
+              boxShadow: '0 3px 16px rgba(0,0,0,0.06)',
+              border: '1px solid rgba(0,0,0,0.05)',
+              width: '180px',
+              flexShrink: 0
+            }}>
+              <h3 style={{
+                fontSize: '9px',
+                fontWeight: '600',
+                color: '#999',
+                marginBottom: '8px',
+                textAlign: 'center',
+                letterSpacing: '1.5px'
+              }}>RUNTIME ENGINES</h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                {runtimes.map((runtime) => (
+                  <a
+                    key={runtime.id}
+                    href={runtime.url}
+                    target="_blank"
+                    onMouseEnter={() => setHoveredRuntime(runtime.id)}
+                    onMouseLeave={() => setHoveredRuntime(null)}
+                    style={{
+                      background: hoveredRuntime === runtime.id ? `${runtime.color}12` : '#f8f9fa',
+                      border: `1px solid ${hoveredRuntime === runtime.id ? runtime.color + '40' : '#eee'}`,
+                      borderRadius: '5px',
+                      padding: '6px 8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    <span style={{
+                      width: '22px', height: '22px',
+                      background: hoveredRuntime === runtime.id ? runtime.color : '#e0e0e0',
+                      borderRadius: '4px',
+                      color: hoveredRuntime === runtime.id ? '#fff' : '#666',
+                      fontSize: '8px',
+                      fontWeight: '700',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.15s ease'
+                    }}>{runtime.icon}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: '10px',
+                        fontWeight: '600',
+                        color: hoveredRuntime === runtime.id ? runtime.color : '#333'
+                      }}>{runtime.name}</div>
+                      <div style={{ fontSize: '7px', color: '#999' }}>{runtime.desc}</div>
                     </div>
-                  ))}
-                </div>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -431,14 +405,14 @@
           <div style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: '35px',
-            marginTop: '40px',
-            background: 'rgba(255,255,255,0.8)',
-            padding: '14px 30px',
-            borderRadius: '30px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            gap: '28px',
+            marginTop: '24px',
+            background: 'rgba(255,255,255,0.85)',
+            padding: '10px 24px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
             width: 'fit-content',
-            margin: '40px auto 0'
+            margin: '24px auto 0'
           }}>
             {[
               { icon: '📐', label: 'Open Standard' },
@@ -447,21 +421,16 @@
               { icon: '🏷️', label: 'Metadata Support' },
               { icon: '📏', label: 'Sub-mm Precision' },
             ].map((feature) => (
-              <div key={feature.label} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#555', fontSize: '12px' }}>
-                <span style={{ fontSize: '14px' }}>{feature.icon}</span>
+              <div key={feature.label} style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#666', fontSize: '11px' }}>
+                <span style={{ fontSize: '12px' }}>{feature.icon}</span>
                 {feature.label}
               </div>
             ))}
           </div>
 
           {/* Source */}
-          <div style={{
-            textAlign: 'center',
-            marginTop: '20px',
-            color: 'rgba(0,0,0,0.3)',
-            fontSize: '11px'
-          }}>
-            Source: cesium.com/platform/cesium-ion • 3D Tiles is an OGC Community Standard
+          <div style={{ textAlign: 'center', marginTop: '16px', color: 'rgba(0,0,0,0.3)', fontSize: '10px' }}>
+            Source: <a href="https://cesium.com/platform/cesium-ion/" target="_blank" style={{ color: 'rgba(0,0,0,0.4)' }}>cesium.com/platform/cesium-ion</a> • 3D Tiles is an OGC Community Standard
           </div>
         </div>
       );
